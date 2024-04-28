@@ -1,4 +1,4 @@
-package com.raza.blog.repository;
+package com.raza.blog.repository.interfaces;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
