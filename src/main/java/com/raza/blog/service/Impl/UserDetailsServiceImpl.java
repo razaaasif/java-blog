@@ -1,4 +1,4 @@
-package com.raza.blog.service;
+package com.raza.blog.service.Impl;
 
 import java.util.Collection;
 import java.util.Collections;

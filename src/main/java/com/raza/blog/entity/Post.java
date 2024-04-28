@@ -29,6 +29,7 @@ public class Post {
 	private Instant createdOn;
 	@Column
 	private Instant updatedOn;
+	
 	@Column
 	@NotBlank
 	private String username;
