@@ -1,0 +1,27 @@
+.header {
+  padding: 5px 20px;
+  background: royalblue;
+}
+
+.title {
+  color: aliceblue;
+  text-decoration: none;
+}
+
+.login , .register {
+  float: right;
+  text-decoration: none;
+  color: aliceblue;
+  padding-top: 10px;
+}
+
+.btn-bd-primary {
+  --bs-btn-font-weight: 500;
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-border-color: var(--bd-violet-bg);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: #{shade-color($bd-violet, 10%)};
+  --bs-btn-active-color: var(--bs-btn-hover-color);
+  --bs-btn-active-bg: #{shade-color($bd-violet, 20%)};
+  --bs-btn-active-border-color: #{shade-color($bd-violet, 20%)};
+}
