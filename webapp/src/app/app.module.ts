@@ -24,9 +24,10 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot([
+      { path: ' ', component: AppComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'login', component: LoginComponent },
-      { path: '**', component: AppComponent },
+      { path: '**', redirectTo: '/' },
     ]),
   ],
   providers: [],

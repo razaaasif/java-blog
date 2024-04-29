@@ -4,6 +4,12 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.raza.blog.config.JwtUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.raza.blog.dto.PostDto;
@@ -13,13 +19,12 @@ import com.raza.blog.repository.interfaces.PostRepository;
 import com.raza.blog.service.PostService;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class PostServiceImpl implements PostService {
 
 	private final PostRepository postRepository;
-
-	public PostServiceImpl(PostRepository postRepository) {
-		this.postRepository = postRepository;
-	}
+	private final JwtUtils jwtUtils;
 
 	@Override
 	public PostDto savePost(PostDto postDto) {
@@ -54,7 +59,15 @@ public class PostServiceImpl implements PostService {
 		post.setContent(postDto.getContent());
 		post.setTitle(postDto.getTitle());
 		post.setCreatedOn(Instant.now());
+		UserDetails userDetails = this.getCurrentLoggedUser();
+		log.debug("createPost() {}" , userDetails);
+		post.setUsername(userDetails.getUsername());
 
 		return post;
+	}
+
+	private UserDetails getCurrentLoggedUser(){
+		return  (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
 	}
 }

@@ -8,17 +8,26 @@ import com.raza.blog.service.UserService;
 import com.raza.blog.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.management.relation.RoleNotFoundException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
@@ -54,5 +63,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Role> getRoles() {
         return this.roleRepository.findAll();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+        return new org.springframework.security.core.userdetails.User(user.getUsername() , user.getPassword() , this.createGrantAuthorities(user.getRoles()));
+    }
+
+    private Collection<? extends GrantedAuthority> createGrantAuthorities(Set<Role> roles) {
+        if(roles == null || roles.isEmpty()){
+            return Collections.emptyList();
+        }
+        return roles.stream(). map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 }

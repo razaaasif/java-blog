@@ -11,7 +11,7 @@ export class AuthServiceService {
 
   public register(register: RegisterModel):Observable<RegisterModel> {
     return this.httpClient.post<RegisterModel>(
-      'http://localhost:8080/api/users/save',
+      'http://localhost:8080/api/auth/users/save',
       register
     );
   }

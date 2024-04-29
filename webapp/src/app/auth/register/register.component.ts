@@ -10,13 +10,14 @@ import { AuthServiceService } from 'src/app/shared/services/auth/auth-service.se
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
-  private register: RegisterModel = new RegisterModel('', '', '');
+  private register!: RegisterModel;
   constructor(
     private formBuilder: FormBuilder,
     private authServiceService: AuthServiceService
   ) {
     this.registerForm = this.formBuilder.group({
       username: [null, Validators.required],
+      name: [null, Validators.required],
       email: [null, Validators.email],
       password: [null, Validators.required],
       confirmPassword: [null, Validators.required],
@@ -26,6 +27,7 @@ export class RegisterComponent implements OnInit {
   public submit() {
     this.register = new RegisterModel(
       this.registerForm.get('username')?.value,
+      this.registerForm.get('name')?.value,
       this.registerForm.get('email')?.value,
       this.registerForm.get('password')?.value
     );

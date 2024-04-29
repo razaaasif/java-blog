@@ -2,6 +2,7 @@ package com.raza.blog.controller;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,8 @@ import com.raza.blog.service.PostService;
 
 @RestController
 @RequestMapping("/api/posts")
+@Slf4j
 public class PostController {
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private final PostService postService;
 
@@ -30,7 +31,7 @@ public class PostController {
 
 	@PostMapping
 	public ResponseEntity<PostDto> savePost(@RequestBody PostDto postDto) {
-		logger.debug("savePost() " + postDto);
+		log.debug("savePost() {}" ,postDto);
 		postDto = this.postService.savePost(postDto);
 		return new ResponseEntity<PostDto>(postDto, HttpStatus.CREATED);
 	}
