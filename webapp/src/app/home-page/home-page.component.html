@@ -1,14 +1,15 @@
-<div class="grid-column">
+<div *ngIf="posts && posts.length > 0; else elseCondition" class="grid-column">
   <ng-container *ngFor="let post of posts">
     <div
       class="card clickable shadow-lg bg-body-tertiary rounded"
-      routerLink="{{'/posts/'+ post.id}}"
+      routerLink="{{ '/posts/' + post.id }}"
     >
       <div class="card-body">
         <h5 class="card-title text-primary">{{ post.title }}</h5>
-        <p style="height: 120px; overflow: hidden;"
+        <p
+          style="height: 120px; overflow: hidden"
           class="card-text"
-          innerHTML="{{post.content | truncate : 145}}"
+          innerHTML="{{ post.content }}"
           [title]="post.title"
         ></p>
         <p class="card-text"></p>
@@ -25,3 +26,22 @@
     </div>
   </ng-container>
 </div>
+
+<ng-template #elseCondition>
+  <div class="alert alert-success" role="alert" >
+    <div class="text-center">
+
+    No blog post has been created. click
+    <a
+      href="{{userService.isAuthenitcated() ? '/add-post':'login'}}"
+      class="clickable"
+      >here</a
+    >
+    {{
+      userService.isAuthenitcated()
+        ? "to add new posts"
+        : "to login and create new posts."
+    }}.
+    </div>
+  </div>
+</ng-template>

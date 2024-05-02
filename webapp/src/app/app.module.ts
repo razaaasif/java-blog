@@ -14,12 +14,12 @@ import { LocalStorageService, NgxWebstorageModule } from 'ngx-webstorage';
 import { HomePageComponent } from './home-page/home-page.component';
 import { EditorComponent, EditorModule } from '@tinymce/tinymce-angular';
 import { AddPostComponent } from './add-post/add-post.component';
-import { BlogInterceptor } from './shared/services/blog.interceptor';
+import { BlogInterceptor } from './shared/interceptor/blog.interceptor';
 import { PostDetailComponent } from './home-page/post-detail/post-detail.component';
-import { TruncatePipe } from './truncate.pipe';
+import { TruncatePipe } from './shared/pipe/truncate.pipe';
 import { CommonModule } from '@angular/common';
-import { AuthGuard } from './auth.guard';
-import { BaseUrlInterceptor } from './base-url.interceptor';
+import { AuthGuard } from './shared/gaurd/auth.guard';
+import { BaseUrlInterceptor } from './shared/interceptor/base-url.interceptor';
 
 @NgModule({
   declarations: [
@@ -43,11 +43,10 @@ import { BaseUrlInterceptor } from './base-url.interceptor';
     EditorModule,
     CommonModule,
     RouterModule.forRoot([
-      { path: ' ', component: HomePageComponent },
+      { path: 'posts', component: HomePageComponent },
 
       { path: 'register', component: RegisterComponent },
       { path: 'login', component: LoginComponent },
-      { path: 'home', component: HomePageComponent },
       {
         path: 'add-post',
         component: AddPostComponent,
@@ -55,7 +54,7 @@ import { BaseUrlInterceptor } from './base-url.interceptor';
       },
       { path: 'posts/:id', component: PostDetailComponent },
 
-      { path: '**', redirectTo: '/' },
+      { path: '**', redirectTo: '/posts' },
     ]),
   ],
   providers: [

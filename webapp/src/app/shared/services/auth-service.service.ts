@@ -15,14 +15,14 @@ export class AuthServiceService {
   constructor(private httpClient: HttpClient , private userLoginService: UserLoginService) {}
   public register(register: RegisterModel): Observable<Message> {
     return this.httpClient.post<Message>(
-      'http://localhost:8080/api/auth/users/save',
+      'api/auth/users/save',
       register
     );
   }
 
   public login(login: LoginModel): Observable<JWTResponseModel> {
     return this.httpClient.post<JWTResponseModel>(
-      'http://localhost:8080/api/auth/login',
+      'api/auth/login',
       login
     ).pipe(map((data) => {
       if(data.success){
