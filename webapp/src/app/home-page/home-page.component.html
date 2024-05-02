@@ -1,0 +1,27 @@
+<div class="grid-column">
+  <ng-container *ngFor="let post of posts">
+    <div
+      class="card clickable shadow-lg bg-body-tertiary rounded"
+      routerLink="{{'/posts/'+ post.id}}"
+    >
+      <div class="card-body">
+        <h5 class="card-title text-primary">{{ post.title }}</h5>
+        <p style="height: 120px; overflow: hidden;"
+          class="card-text"
+          innerHTML="{{post.content | truncate : 145}}"
+          [title]="post.title"
+        ></p>
+        <p class="card-text"></p>
+        <p class="card-text">
+          <small class="text-danger">
+            <span>Author</span> : @{{ post.username }}
+          </small>
+          <br />
+          <small class="text-muted"
+            >Last updated on {{ post.lastUpdated | date }}</small
+          >
+        </p>
+      </div>
+    </div>
+  </ng-container>
+</div>

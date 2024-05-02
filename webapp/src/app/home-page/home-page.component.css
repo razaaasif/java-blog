@@ -1,0 +1,14 @@
+.grid-column {
+  margin: 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 1rem;
+}
+.clickable{
+  cursor: pointer;
+}
+
+
+.post-title{
+  color: royalblue;
+}

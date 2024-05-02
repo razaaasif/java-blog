@@ -1,7 +1,11 @@
+import { UserLoginService } from 'src/app/shared/services/auth/user-login.service';
+import { MessageService } from 'primeng/api';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RegisterModel } from 'src/app/shared/model/register.model';
 import { AuthServiceService } from 'src/app/shared/services/auth/auth-service.service';
+import { Message } from 'src/app/shared/model/message.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,8 +17,9 @@ export class RegisterComponent implements OnInit {
   private register!: RegisterModel;
   constructor(
     private formBuilder: FormBuilder,
-    private authServiceService: AuthServiceService
-  ) {
+    private authServiceService: AuthServiceService,
+    private messageService: MessageService,
+    private router: Router  ) {
     this.registerForm = this.formBuilder.group({
       username: [null, Validators.required],
       name: [null, Validators.required],
@@ -32,8 +37,15 @@ export class RegisterComponent implements OnInit {
       this.registerForm.get('password')?.value
     );
     this.authServiceService.register(this.register).subscribe(
-      (data) => {
+      (data:Message) => {
         console.log(data);
+        if (data) {
+          this.messageService.add({
+            severity: data.severity.toLowerCase(),
+            detail: data.message,
+          });
+          this.router.navigateByUrl('/login');
+        }
       },
       (error) => {
         throw new Error(error.message);

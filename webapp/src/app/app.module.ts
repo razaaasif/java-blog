@@ -5,10 +5,21 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
-import { RegisterSuccessComponent } from './auth/register-success/register-success.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { PrimeNgModule } from './app.primeng.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LocalStorageService, NgxWebstorageModule } from 'ngx-webstorage';
+import { HomePageComponent } from './home-page/home-page.component';
+import { EditorComponent, EditorModule } from '@tinymce/tinymce-angular';
+import { AddPostComponent } from './add-post/add-post.component';
+import { BlogInterceptor } from './shared/services/blog.interceptor';
+import { PostDetailComponent } from './home-page/post-detail/post-detail.component';
+import { TruncatePipe } from './truncate.pipe';
+import { CommonModule } from '@angular/common';
+import { AuthGuard } from './auth.guard';
+import { BaseUrlInterceptor } from './base-url.interceptor';
 
 @NgModule({
   declarations: [
@@ -16,21 +27,42 @@ import { RouterModule } from '@angular/router';
     HeaderComponent,
     RegisterComponent,
     LoginComponent,
-    RegisterSuccessComponent,
+    HomePageComponent,
+    AddPostComponent,
+    TruncatePipe,
+    PostDetailComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    PrimeNgModule,
+    BrowserAnimationsModule,
+    NgxWebstorageModule.forRoot(),
+    EditorModule,
+    CommonModule,
     RouterModule.forRoot([
-      { path: ' ', component: AppComponent },
+      { path: ' ', component: HomePageComponent },
+
       { path: 'register', component: RegisterComponent },
       { path: 'login', component: LoginComponent },
+      { path: 'home', component: HomePageComponent },
+      {
+        path: 'add-post',
+        component: AddPostComponent,
+        canActivate: [AuthGuard],
+      },
+      { path: 'posts/:id', component: PostDetailComponent },
+
       { path: '**', redirectTo: '/' },
     ]),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: BlogInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: BaseUrlInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
+  exports: [EditorComponent],
 })
 export class AppModule {}

@@ -1,9 +1,43 @@
 <nav class="navbar bg-primary" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLink="">Java Blog</a>
-    <form class="d-flex" role="search">
-      <button routerLink="login" type="button" class="btn btn-bd-primary">Login</button>
-      <button routerLink="register" type="button" class="btn btn-bd-primary">Register</button>
-    </form>
+    <a
+      class="navbar-brand"
+      routerLink="home"
+      style="margin-left: 2rem; font-size: xx-large; font-weight: bold"
+      >Java Blog</a
+    >
+    <div class="d-flex">
+      <button
+        routerLink="add-post"
+        *ngIf="userLoginService.isAuthenitcated()"
+        type="button"
+        class="btn btn-bd-primary"
+      >
+        Add Post
+      </button>
+
+      <div class="mx-5"></div>
+
+      <button routerLink="login" type="button"
+              *ngIf="!userLoginService.isAuthenitcated()"
+
+      class="btn btn-bd-primary">
+        Login
+      </button>
+      <button
+              *ngIf="!userLoginService.isAuthenitcated()"
+
+      routerLink="register" type="button" class="btn btn-bd-primary">
+        Register
+      </button>
+      <button
+        *ngIf="userLoginService.isAuthenitcated()"
+        (click)="logout()"
+        type="button"
+        class="btn btn-bd-primary"
+      >
+        Logout
+      </button>
+    </div>
   </div>
 </nav>

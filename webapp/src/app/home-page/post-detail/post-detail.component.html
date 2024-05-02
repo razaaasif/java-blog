@@ -1,0 +1,19 @@
+<ng-container *ngIf="!isLoading">
+  <div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-8">
+          <h1 class="post-title">{{ post.title }}</h1>
+          <div class="justify-content-between d-flex">
+            <div class="text-primary">By: {{ post.username }}</div>
+            <div>Last Updated: {{ post.lastUpdated | date }}</div>
+          </div>
+
+          <hr />
+          <p [innerHTML]="post.content"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
