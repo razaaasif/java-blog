@@ -5,7 +5,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { PostModel } from '../shared/model/post.model';
-import { UserLoginService } from '../shared/services/auth/user-login.service';
+import { UserLoginService } from '../shared/services/user-login.service';
 import { PostService } from '../shared/services/post.service';
 import { Router } from '@angular/router';
 

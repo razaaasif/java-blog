@@ -1,9 +1,9 @@
-import { UserLoginService } from 'src/app/shared/services/auth/user-login.service';
+import { UserLoginService } from 'src/app/shared/services/user-login.service';
 import { MessageService } from 'primeng/api';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RegisterModel } from 'src/app/shared/model/register.model';
-import { AuthServiceService } from 'src/app/shared/services/auth/auth-service.service';
+import { AuthServiceService } from 'src/app/shared/services/auth-service.service';
 import { Message } from 'src/app/shared/model/message.model';
 import { Router } from '@angular/router';
 

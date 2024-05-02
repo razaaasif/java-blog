@@ -4,8 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { JWTResponseModel } from 'src/app/shared/model/JWTResponse.model';
 import { LoginModel } from 'src/app/shared/model/login.model';
-import { AuthServiceService } from 'src/app/shared/services/auth/auth-service.service';
-import { UserLoginService } from 'src/app/shared/services/auth/user-login.service';
+import { AuthServiceService } from 'src/app/shared/services/auth-service.service';
+import { UserLoginService } from 'src/app/shared/services/user-login.service';
 
 @Component({
   selector: 'app-login',

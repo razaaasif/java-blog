@@ -1,15 +1,13 @@
 package com.raza.blog.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
@@ -32,9 +30,11 @@ public class Post {
 	@NotEmpty
 	private String content;
 	@Column
-	private Instant createdOn;
+	@CreationTimestamp
+	private Date createdOn;
 	@Column
-	private Instant updatedOn;
+	@UpdateTimestamp
+	private Date updatedOn;
 	
 	@Column
 	@NotBlank

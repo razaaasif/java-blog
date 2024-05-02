@@ -1,6 +1,7 @@
 package com.raza.blog.serviceImpl;
 
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,7 @@ public class PostServiceImpl implements PostService {
 		postDto.setContent(savedPost.getContent());
 		postDto.setId(savedPost.getId());
 		postDto.setUsername(savedPost.getUsername());
+		postDto.setLastUpdated(savedPost.getUpdatedOn());
 		return postDto;
 	}
 
@@ -58,7 +60,7 @@ public class PostServiceImpl implements PostService {
 		Post post = new Post();
 		post.setContent(postDto.getContent());
 		post.setTitle(postDto.getTitle());
-		post.setCreatedOn(Instant.now());
+		post.setCreatedOn(new Date());
 		UserDetails userDetails = this.getCurrentLoggedUser();
 		log.debug("createPost() {}" , userDetails);
 		post.setUsername(userDetails.getUsername());

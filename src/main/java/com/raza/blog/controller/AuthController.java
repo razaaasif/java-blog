@@ -1,9 +1,8 @@
 package com.raza.blog.controller;
 
 import com.raza.blog.config.JwtUtils;
-import com.raza.blog.dto.RoleDto;
-import com.raza.blog.dto.UserDto;
-import com.raza.blog.dto.UserRoleDto;
+import com.raza.blog.constants.SEVERITY;
+import com.raza.blog.dto.*;
 import com.raza.blog.entity.Role;
 import com.raza.blog.entity.User;
 import com.raza.blog.service.UserService;
@@ -16,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,15 +35,28 @@ public class AuthController {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticate(@RequestBody UserDto userDto){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername() , userDto.getPassword()));
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
+    @PostMapping("/login")
+    public ResponseEntity<JWTAuthResponse> authenticate(@RequestBody LoginRequest loginRequest){
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername() , loginRequest.getPassword()));
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
         if(userDetails != null){
-            return ResponseEntity.ok(jwtUtils.generateToken(userDetails));
-        } else return ResponseEntity.badRequest().body("Something wrong happened");
+            return ResponseEntity.ok(new JWTAuthResponse(jwtUtils.generateToken(userDetails),loginRequest.getUsername(), true ));
+        } else {
+            log.error("Username not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JWTAuthResponse(null,null, false ));        }
     }
 
+
+    @PostMapping("/logout")
+    public ResponseEntity<JWTAuthResponse> logout(@RequestBody LoginRequest loginRequest){
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername() , loginRequest.getPassword()));
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
+        if(userDetails != null){
+            return ResponseEntity.ok(new JWTAuthResponse(jwtUtils.generateToken(userDetails),loginRequest.getUsername(), true ));
+        } else {
+            log.error("Username not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JWTAuthResponse(null,null, false ));        }
+    }
 
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getUsers(){
@@ -61,10 +74,17 @@ public class AuthController {
 
 
     @PostMapping("/users/save")
-    public ResponseEntity<UserDto> saveUser(@RequestBody UserDto userDto){
-        User savedUser = this.userService.saveUser(this.createUser(userDto));
-        return new ResponseEntity<UserDto>(this.createUserDto(savedUser) , HttpStatus.CREATED);
-     }
+    public ResponseEntity<Message> saveUser(@RequestBody UserDto userDto){
+        try{
+            User savedUser = this.userService.saveUser(this.createUser(userDto));
+            return new ResponseEntity<Message>(new Message(SEVERITY.SUCCESS , "Registered Successfully") , HttpStatus.CREATED);
+        } catch (Exception e){
+            log.error("Error while creating user {} " , e.getMessage());
+            return new ResponseEntity<Message>(new Message(SEVERITY.ERROR , e.getMessage()) , HttpStatus.CREATED);
+
+        }
+
+       }
 
     @PostMapping("/roles/save")
     public ResponseEntity<RoleDto> saveRole(@RequestBody RoleDto roleDto){
@@ -81,6 +101,7 @@ public class AuthController {
         User user = this.userService.addRoleToUser(userRoleDto.getUsername() , userRoleDto.getRole());
         return new ResponseEntity<UserDto>(this.createUserDto(user), HttpStatus.CREATED);
     }
+
 
 
     private Role createRole(String role) {

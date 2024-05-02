@@ -1,6 +1,6 @@
 package com.raza.blog.constants;
 
-public enum MESSAGE_TYPE {
+public enum SEVERITY {
     SUCCESS,
     INFO,
     WARNING,

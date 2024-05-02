@@ -1,5 +1,5 @@
 import { LocalStorageService } from 'ngx-webstorage';
-import { JWTResponseModel } from './../../model/JWTResponse.model';
+import { JWTResponseModel } from '../model/JWTResponse.model';
 import { Injectable } from '@angular/core';
 
 @Injectable({

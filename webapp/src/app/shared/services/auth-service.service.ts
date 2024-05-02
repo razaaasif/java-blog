@@ -1,12 +1,12 @@
-import { UserLoginService } from 'src/app/shared/services/auth/user-login.service';
+import { UserLoginService } from 'src/app/shared/services/user-login.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RegisterModel } from '../../model/register.model';
+import { RegisterModel } from '../model/register.model';
 import { Observable } from 'rxjs';
-import { Message } from '../../model/message.model';
-import { LoginModel } from '../../model/login.model';
+import { Message } from '../model/message.model';
+import { LoginModel } from '../model/login.model';
 import { map } from 'rxjs/operators';
-import { JWTResponseModel } from '../../model/JWTResponse.model';
+import { JWTResponseModel } from '../model/JWTResponse.model';
 
 @Injectable({
   providedIn: 'root',

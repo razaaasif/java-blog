@@ -44,7 +44,7 @@ public class PostController {
 	@GetMapping("{id}")
 	public ResponseEntity<PostDto> getPosts(@PathVariable("id") Long id) {
 		try {
-			return new ResponseEntity<PostDto>(this.postService.getPostById(id), HttpStatus.FOUND);
+			return new ResponseEntity<PostDto>(this.postService.getPostById(id), HttpStatus.OK);
 		} catch (PostNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
